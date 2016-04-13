@@ -11,7 +11,7 @@ You can add items by ISBN or ASIN from any Amazon Site (.com .co.jp ...) to crea
 ## Installation:
 - Download all files
 - Download php from [http://php.net/downloads.php](http://php.net/downloads.php)
-- Extract php in to the folder php-server contained in the globalwishlist root folder.
+- Extract php to the folder php-server contained in the globalwishlist root folder.
 - start the build-in php server: php.exe -S localhost:8888 -t ../. 
 You can create a shortcut in the globalwishlist root folder ( php\php.exe -S localhost:8888 -t ../ )
 
@@ -56,7 +56,7 @@ An Example would be
 3456789012
 ...
 ```
-A list has to been created before adding multiple items.
+A list has to be created before adding items.
 
 ##Features currently not included, but planned:
 | Feature | Description |

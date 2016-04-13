@@ -1,6 +1,6 @@
 # globalwishlist
 
-##Still in development. First Version will be available in the near future.
+##Still in development. 
 
 A global Wishlist, that pulls Data from Amazon and
 - is available offline
@@ -71,3 +71,5 @@ A list has to been created before adding multiple items.
 
 Adding items to a list and saving a list needs a php server (the php build-in server is sufficient and super easy to use).
 Displaying a list is done in javascript, no php required for this purpose.
+
+Use at your own risk.

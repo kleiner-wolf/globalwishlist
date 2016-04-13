@@ -32,7 +32,7 @@ ISBN/ASIN3
 ...
 ```
 
-the country_code needs to be in the first line and has the syntax .country i.e. .com or .co.jp
+the country_code needs to be in the first line and is the country code top-level domain i.e. .com or .co.jp
 
 An Example would be
 ```
@@ -43,6 +43,13 @@ An Example would be
 ...
 ```
 A list has to been created before adding multiple items.
+
+##Features currently not included, but planned:
+| Feature | Description |
+| --- | --- |
+| Add multiple Items at once from different domains | will be included in the future |
+| Move items from one list to another |  |
+| Merge lists |  |
 
 ###Developed with
 - Javascript - hold and display data

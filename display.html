@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Amazon List</title>
+
+		<meta name="description" content="GlobalWishlist">
+
+		<link rel="stylesheet" href="jquery/jquery-ui.min.css" />
+		
+		<script src="jquery/jquery.js" type="text/javascript"></script>
+		<script src="jquery/jquery-ui.min.js" type="text/javascript"></script>
+		<script src="jquery/js.cookie.js" type="text/javascript"></script>
+		<!--<script src="jquery/jquery.xdomainajax.js" type="text/javascript"></script>-->
+		
+		<link rel="stylesheet" href="js/list.css" />
+
+  
+		<script src="js/import_export.js" type="text/javascript"></script>
+		<script src="js/main_list.js" type="text/javascript"></script>
+		<script>
+		$(function() {
+			$(".savebutton").button().click(function(){
+				GlobalWishlist.Main.saveList("db/testphp.json");
+			});
+			
+			$(".loadbutton").button().click(function(){
+				GlobalWishlist.Main.loadList("db/testphp.json");
+			});
+			
+			$(".additembutton").button().click(function(){	
+				$(".additem-dialog").dialog({
+				  buttons: [
+					{
+					  text: "Add Item",
+					  icons: {
+						primary: "ui-icon-heart"
+					  },
+					  click: function() {
+						// Functions
+						var $isbn = $(".additem-dialog-isbn-input").val();
+						var $country_code = $(".additem-dialog-country-input").val();
+						//if($isbn == undefined || $isbn==0) {
+						//	var $isbn = $(".additem-dialog-asin-input").val();
+						//}
+						if($isbn!=0){ 
+							console.log($isbn);
+							GlobalWishlist.IO.importItemFromISBNAmazon($isbn, GlobalWishlist.Main.getActiveListName(), $country_code);
+						}
+						$( this ).dialog( "close" );
+						
+					  }
+					}
+				  ]
+				});
+			});
+			
+			$(".newlistbutton").button().click(function(){
+				$(".newlist-dialog").dialog({
+				  buttons: [
+					{
+					  text: "Create",
+					  icons: {
+						primary: "ui-icon-heart"
+					  },
+					  click: function() {
+						var rvalue = GlobalWishlist.Main.createList($(".newlist-dialog-name-input").val());
+				
+						$( this ).dialog( "close" );
+						
+						if(rvalue!=0) {
+							$(".warning-dialog-text").text(rvalue);
+							$(".warning-dialog").dialog().show();
+						}
+						
+					  }
+					}
+				  ]
+				});
+			});
+			
+			$(".additemlistbutton").button().click(function() {
+				$(".additemlist-dialog").dialog({
+					buttons: [
+					{
+					  text: "Add Items",
+					  icons: {
+						primary: "ui-icon-heart"
+					  },
+					  click: function() {
+						
+						var $filename = $(".additemlist-dialog-filename-input").val();
+						var listname = GlobalWishlist.Main.getActiveListName();
+						
+						if( listname== null || listname == undefined) {
+							$(".warning-dialog-text").text("No list found. Please create a list before importing.");
+							$(".warning-dialog").dialog().show();
+						}
+						
+						if($filename!=null){ 
+							GlobalWishlist.IO.importItemsFromISBNList($filename,listname);
+						}
+							
+						$( this ).dialog( "close" );
+						
+					  }
+					}
+				  ]
+				})
+			
+			});
+			
+		});
+		</script>
+
+	</head>
+
+	<body style="background-color:#4F464A">
+		<div class="toolbar">
+			<span class="savebutton">Save</span>
+			<span class="loadbutton">Load</span>
+			<span class="newlistbutton">New List</span>
+			<span class="additembutton">Add Item</span>
+			<span class="additemlistbutton">Add Items From List</span>
+			
+			<span id="wishlist-select-buttons">
+			</span>
+		</div>
+		
+		<div class="dialogs">
+			<div class="additem-dialog" title="Add New Item" style="display: none">
+				<div>Enter ISBN or ASIN into the input field.</div>
+				<span>ISBN/ASIN: </span>
+				<input class='additem-dialog-isbn-input' />
+				<span>Country Code: </span>
+				<input class='additem-dialog-country-input' type='text' value='.co.jp'/>
+			</div>
+			
+			<div class="newlist-dialog" title="Create New List" style="display: none">
+				<span>List name: </span>
+				<input class='newlist-dialog-name-input'>
+			</div>
+			
+			<div class="additemlist-dialog" title="Add Items From List" style="display: none">
+				<div>Enter filename that contains the list of ISBN/ASIN numbers.</div>
+				<span>filename: </span>
+				<input class='additemlist-dialog-filename-input' />
+			</div>
+			
+			<div class="warning-dialog" title="Warning" style="display: none">
+				<div>Something bad occured:</div>
+				<div class="warning-dialog-text"></div>
+			</div>
+		</div>
+		
+	</body>
+</html>

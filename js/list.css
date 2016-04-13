@@ -1,0 +1,48 @@
+.wishlist { 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0; 
+	width: 100%; 
+}
+
+.wishlist li { 
+	margin: 0 3px 3px 3px; 
+	padding: 0.4em; 
+	padding-left: 1.5em; 
+	font-size: 1.2em; 
+}
+
+.wishlist > li > div{ 
+	padding-left: 2.0em; 
+	font-size: 1.0em; 
+	display:inline-block; 
+	vertical-align: middle;
+}
+
+.wishlist .listitem-image-div{ padding-left: 0em; }
+.wishlist .listitem-image { width: 100px; }
+.wishlist .listitem-name { width: 100%; padding-right: 1.0em;}
+.wishlist .listitem-note { width: 100%; padding-right: 1.0em; padding-top: 1.0em; font-size: 12px; }
+.wishlist .listitem-nameandnote { width: 50%; padding-right: 1.0em;}
+.wishlist .listitem-isbn { width: 10%; }
+.wishlist .listitem-price { width: 5%; }
+.wishlist .listitem-link { width: 20%; padding-right: 0.5em; }
+
+.wishlist-container .listitem-header{ 
+	padding-left: 2.0em; 
+	font-size: 1.0em; 
+	display:inline-block; 
+	vertical-align: middle;
+}
+.wishlist-container .listitem-header-image{ width: 10%; padding-left: 0em; }
+.wishlist-container .listitem-header-name { width: 50%; }
+.wishlist-container .listitem-header-isbn { width: 10%; }
+.wishlist-container .listitem-header-price { width: 5%; }
+.wishlist-container .listitem-header-link { width: 10%; }
+.wishlist-container .list-header{ margin-top: 0.3em; }
+
+.listitem-edit {}
+
+.toolbar #wishlist-select-buttons { 
+	float: right;
+}

@@ -8,6 +8,20 @@ A global Wishlist, that pulls Data from Amazon and
 
 You can add items by ISBN or ASIN from any Amazon Site (.com .co.jp ...) to create a global wishlist.
 
+## Installation:
+- Download all files
+- Download php from [http://php.net/downloads.php](http://php.net/downloads.php)
+- Extract php in to the folder php-server contained in the globalwishlist root folder.
+- start the build-in php server: php.exe -S localhost:8888 -t ../. 
+You can create a shortcut in the globalwishlist root folder ( php\php.exe -S localhost:8888 -t ../ )
+
+| Arguments | Description |
+| --- | --- |
+| -S localhost:8888 | defines how you access your list. localhost:8888 means that you need to open the URL http//localhost:8888/display.html |
+| -t ../| defines the root directory of the build-in php server. This should point to the globalwishlist root folder. |
+
+An easier installation may come in the future.
+
 ##Features included:
 
 | Feature | Description |

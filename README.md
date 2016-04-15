@@ -17,7 +17,7 @@ You can create a shortcut in the globalwishlist root folder ( php\php.exe -S loc
 
 | Arguments | Description |
 | --- | --- |
-| -S localhost:8888 | defines how you access your list. localhost:8888 means that you need to open the URL http//localhost:8888/display.html |
+| -S localhost:8888 | defines how you access your list. localhost:8888 means that you need to open the URL http://localhost:8888/display.html |
 | -t ../| defines the root directory of the build-in php server. This should point to the globalwishlist root folder. |
 
 An easier installation may come in the future.
@@ -29,7 +29,7 @@ An easier installation may come in the future.
 | Create Lists | On Load, no list is created, therefore the first step is creating a list |
 | Add Items by ISBN/ASIN | main image and name are currently fetched from amazon (may be extended) |
 | Delete Items |  |
-| Sort Items |  |
+| Sort Items | Drag Items within a list to sort the list. |
 | Delete Lists |  |
 | Save to file | currently to a fixed file |
 | Load from file | currently from a fixed file |
@@ -61,9 +61,13 @@ A list has to be created before adding items.
 ##Features currently not included, but planned:
 | Feature | Description |
 | --- | --- |
-| Add multiple Items at once from different domains | will be included in the future |
+| Add multiple Items at once from different domains | create one text file to add items from different domains at once |
 | Move items from one list to another |  |
 | Merge lists |  |
+| Fetching more data | Fetch more data than just the name and an image (i.e. price, availability ...) |
+| Update Item | Fetch current data from amazon to update the item data |
+| Modify Item | Manually change item data |
+| Export | enables you to export data from your lists (specific items, a selection of lists) either with the already fetched data or as an text file containing ISBN/ASIN numbers |
 
 ###Developed with
 - Javascript - hold and display data

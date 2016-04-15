@@ -191,8 +191,6 @@ GlobalWishlist.Main = (function(){
 		if( getList(name)!=0 ) { console.log("List exists already"); return "List could not be created. List with this name exists already."; }
 		var newlist = new linkedlist(name);
 		
-		//console.log(JSON.stringify(newlist));
-		
 		_lists[_lists.length] = newlist;		
 		_listcount++;
 		
@@ -271,11 +269,11 @@ GlobalWishlist.Main = (function(){
 		*/
 		
 		//jquery ui routine for list sorting
-		$( ".wishlist#"+listname ).sortable({
+		$( ".wishlist[listname='"+listname+"']" ).sortable({
 			placeholder: "ui-state-highlight",
 			stop: function( event, ui ) {
 				var $itemid = ui.item.attr("itemid");
-				var $listitems = $( ".wishlist#"+listname+" li");
+				var $listitems = $( ".wishlist[listname='"+listname+"'] li");
 				var index = 0;
 				for(var i=0; i<$listitems.length; i++) {
 					if($listitems.eq(i).attr("itemid") == $itemid) {
@@ -312,12 +310,12 @@ GlobalWishlist.Main = (function(){
 	};
 	
 	var deleteListView = function(name) {
-		$(".wishlist-container."+name).remove();
+		$(".wishlist-container[listname='"+name+"']").remove();
 		deleteListSelectButton(name);
 	};
 	
 	var initList = function (listname) {
-		var $container = $("<div>").addClass("wishlist-container "+listname).attr("id",listname+"Wishlist").attr("listname", listname);
+		var $container = $("<div>").addClass("wishlist-container").attr("id",listname.replace(/\s+/g, '')+"Wishlist").attr("listname", listname);
 		
 		var $header = $("<div>").addClass("list-header ui-widget-header");
 		$header.append($("<div>").addClass("listitem-header listitem-header-image").text(""));
@@ -329,7 +327,7 @@ GlobalWishlist.Main = (function(){
 		
 		$container.append($header);
 		
-		var $list = $("<ul>").addClass("wishlist").attr("id",listname).attr("listname", listname);
+		var $list = $("<ul>").addClass("wishlist").attr("id",listname.replace(/\s+/g, '')).attr("listname", listname);
 		$container.append($list);
 		
 		$("body").append($container);
@@ -359,33 +357,38 @@ GlobalWishlist.Main = (function(){
 		);
 		$listitem.append($itemprice);
 		
-		var $itemlink = $("<div>").addClass("listitem listitem-link-div").append($("<a href='http://www.amazon.co.jp/dp/"+item.isbn+"' >Amazon.co.jp</a>").addClass("listitem-link"));
+		var $itemlink = $("<div>").addClass("listitem listitem-link-div").append($("<a href='http://www.amazon.co.jp/dp/"+item.isbn+"' target='_blank' >Amazon.co.jp</a>").addClass("listitem-link"));
 		$listitem.append($itemlink);
 		
 		$listitem.append(addListViewItemEdit(listname, item));
 
-		$(".wishlist#"+listname).append($listitem);
+		$(".wishlist[listname='"+listname+"']").append($listitem);
 	};
 	
 	var addListViewItemEdit = function(listname, item) {
 		var $editbar = $("<div>").addClass("listitem listitem-edit");
 		$editbar.append($("<div>").text("Delete").addClass("listitem listitem-edit-del").button().click( 
 			function() { 
-				console.log(item.name); 
 				deleteListItem(listname,item); 
 			}
 		));
-		
+		/*
+		$editbar.append($("<div>").text("Update Price").addClass("listitem listitem-edit-update-price").button().click( 
+			function() { 
+				
+			}
+		));
+		*/
 		return $editbar;
 	};
 	
 	var deleteListViewItem = function (listname, item) {
-		$(".wishlist#"+listname+" .wishlist-item[itemid='"+item.id+"']").remove();
+		$(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"']").remove();
 		getList(listname).print();
 	};
 	
 	var updateListViewItem = function (listname, item) {
-		var $listitem = $(".wishlist#"+listname+" .wishlist-item[itemid='"+item.id+"']");
+		var $listitem = $(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"']");
 		$listitem.find("listitem-name").text(item.name);
 		/* todo : values that are changed during an update */
 		
@@ -397,7 +400,7 @@ GlobalWishlist.Main = (function(){
 		$(".wishlist-select-button[listname='"+listname+"']").addClass("wishlist-buttonstate-selected ui-state-focus");
 				
 		$(".wishlist.wishlist-active").removeClass("wishlist-active");
-		$(".wishlist#"+listname).addClass("wishlist-active");
+		$(".wishlist[listname='"+listname+"']").addClass("wishlist-active");
 		$(".wishlist-container").removeClass("wishlist-active");
 		$(".wishlist-container[listname='"+listname+"']").addClass("wishlist-active");
 		

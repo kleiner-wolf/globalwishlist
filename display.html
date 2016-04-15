@@ -93,7 +93,7 @@
 						var $filename = $(".additemlist-dialog-filename-input").val();
 						var listname = GlobalWishlist.Main.getActiveListName();
 						
-						if( listname== null || listname == undefined) {
+						if( listname == null || listname === undefined) {
 							$(".warning-dialog-text").text("No list found. Please create a list before importing.");
 							$(".warning-dialog").dialog().show();
 						}

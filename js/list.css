@@ -26,7 +26,7 @@
 .wishlist .listitem-nameandnote { width: 50%; padding-right: 1.0em;}
 .wishlist .listitem-isbn { width: 10%; }
 .wishlist .listitem-price { width: 5%; }
-.wishlist .listitem-link { width: 20%; padding-right: 0.5em; }
+.wishlist .listitem-link { width: 20%; padding-right: 3.0em; }
 
 .wishlist-container .listitem-header{ 
 	padding-left: 2.0em; 
@@ -42,6 +42,7 @@
 .wishlist-container .list-header{ margin-top: 0.3em; }
 
 .listitem-edit {}
+.listitem-edit-del { font-size: 18px; }
 
 .toolbar #wishlist-select-buttons { 
 	float: right;

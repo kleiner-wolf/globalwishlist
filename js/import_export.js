@@ -18,12 +18,9 @@ return {
 						GlobalWishlist.Main.addListItem(data[i].name, new GlobalWishlist.Main.listitem(item));
 					}
 				}
-				
-				/* set active list */
-				if(i == 0) {
-					GlobalWishlist.Main.setActiveList(data[i].name);
-				}
 			}
+			
+			GlobalWishlist.Main.setActiveList(data[0].name);
 		});
 	},
 
@@ -53,7 +50,7 @@ return {
 		}
 		listText += "]";
 		
-		console.log(listText);
+		//console.log(listText);
 		
 		$.ajax({
 			type: "POST",
@@ -66,15 +63,16 @@ return {
 		});
 	},
 	
-	importItemFromISBNAmazon: function (isbn, list, country_code) {
-		console.log("ISBN: " + isbn);
-
+	importItemFromISBNAmazon: function (isbn, list, country_code, async) {
+		console.log("Fetching ISBN: " + isbn);
+		if(async === undefined) { async = true; }
+		
 		$.ajax({
 		  type: "POST",
 		  url: "http://localhost:8888/php/amazonisbn.php",
 		  //data: { "url" : "http://www.amazon.co.jp/dp/"+isbn+"/" },
 		  data: { "url" : "http://www.amazon"+country_code+"/gp/product/black-curtain-redirect.html?ie=UTF8&redirect=true&redirectUrl=%2Fgp%2Fproduct%2F"+isbn+"/" },
-		  async: false,
+		  async: async,
 		  success: function(data){              
 				// put the result into a div
 				var $result = $("<div>").addClass("temp-result").hide();
@@ -92,7 +90,7 @@ return {
 				if(image_url === undefined) {
 					image_url = $result.find("#imageBlock_feature_div #landingImage").attr("src");
 				}
-				console.log("Image:" + image_url);
+				//console.log("Image:" + image_url);
 				$.post("http://localhost:8888/php/imagegraber.php",
 					{ "url" : image_url, "filename" : "../"+listitem.image},
 					function(data){ 
@@ -106,10 +104,10 @@ return {
 	importItemsFromISBNList: function(filename, list) {
 		$.get(filename,
 			function (data) {
-				console.log(data);
+				//console.log(data);
 				
 				isbns = data.split("\n");
-				console.log(isbns);
+				//console.log(isbns);
 			
 				var country_code = isbns[0].replace("\r","");
 				for(var i=1; i<isbns.length; i++){

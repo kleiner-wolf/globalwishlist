@@ -13,7 +13,7 @@ You can add items by ISBN or ASIN from any Amazon Site (.com .co.jp ...) to crea
 - Download php from [http://php.net/downloads.php](http://php.net/downloads.php)
 - Extract php to the folder php-server contained in the globalwishlist root folder.
 - start the build-in php server: php.exe -S localhost:8888 -t ../. 
-You can create a shortcut in the globalwishlist root folder ( php\php.exe -S localhost:8888 -t ../ )
+You can create a shortcut in the globalwishlist root folder ( php-server\php.exe -S localhost:8888 -t ../ )
 
 | Arguments | Description |
 | --- | --- |

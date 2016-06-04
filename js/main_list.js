@@ -86,6 +86,14 @@ GlobalWishlist.Main = (function(){
 			return index;
 		};
 		
+		this.getItemData = function (id) {
+			var node = this.first;
+			while(node.data.id != id) {
+				node = node.getNext();
+			}
+			return node.getData();
+		};
+		
 		this.getFirst = function() {
 			return this.first;
 		};
@@ -165,14 +173,14 @@ GlobalWishlist.Main = (function(){
 			this.image = "";
 			this.name = "";
 			this.isbn = "0";
-			this.price = "0";
+			this.price = "-";
 			this.note = "";
 			this.fetchID = "";
 		} else {
 			if(item.image === undefined) { this.image = ""; } else { this.image = item.image; }
 			if(item.name === undefined) { this.name = ""; } else { this.name = item.name; }
 			if(item.isbn === undefined) { this.isbn = "0"; } else { this.isbn = item.isbn; }
-			if(item.price === undefined) { this.price = "0"; } else { this.price = item.price; }
+			if(item.price === undefined) { this.price = "-"; } else { this.price = item.price; }
 			if(item.note === undefined) { this.note = ""; } else { this.note = item.note; }
 			if(item.fetchID === undefined) { this.fetchID = ""; } else { this.fetchID = item.fetchID; }
 			/*
@@ -246,8 +254,11 @@ GlobalWishlist.Main = (function(){
 	};
 	
 	var updateListItem = function (listname, itemID, updatedItem) {
-		getList(listname).updateItemData(itemID, updateditem);
-		updateListItemView(listname, getList(listname).getItem(itemID));
+		var data = getList(listname).getItemData(itemID); //updateItemData(itemID, updateditem);
+		
+		data.price = updatedItem.price;
+		
+		updateListViewItem(listname, getList(listname).getItemData(itemID));
 	};
 	
 	var saveList = function (listfile) {
@@ -284,7 +295,7 @@ GlobalWishlist.Main = (function(){
 				
 				console.log("Move "+ getList(listname).getItemIndex($itemid) + " to " + index)
 				getList(listname).updatePosition($itemid, index);
-				getList(listname).print();
+				//getList(listname).print();
 			}
 		});	
 		
@@ -323,7 +334,7 @@ GlobalWishlist.Main = (function(){
 		$header.append($("<div>").addClass("listitem-header listitem-header-isbn").text("ISBN"));
 		$header.append($("<div>").addClass("listitem-header listitem-header-price").text("Price"));
 		$header.append($("<div>").addClass("listitem-header listitem-header-link").text("Link"));
-		$header.append($("<div>").addClass("listitem-header listitem-header-delete").text("Liste Löschen").click(function(){ deleteList(listname); }));
+		$header.append($("<div>").addClass("listitem-header listitem-header-delete").text("Delete List").click(function(){ deleteList(listname); }));
 		
 		$container.append($header);
 		
@@ -349,15 +360,51 @@ GlobalWishlist.Main = (function(){
 		
 		var $itemisbn = $("<div>").addClass("listitem listitem-isbn").text(item.isbn);
 		$listitem.append($itemisbn);
-		
+
 		var $itemprice = $("<div>").addClass("listitem listitem-price").text(item.price).button().click(
 			function(){
-				$(this).text("1");
+				$(".editvalue-dialog-value-input").val( $(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"'] .listitem-price").text() );
+				$(".editvalue-dialog").dialog({
+				  modal: true,
+				  buttons: [
+					{
+					  text: "Edit",
+					  icons: {
+						primary: "ui-icon-disk"
+					  },
+					  click: function() {
+						var newvalue = $(".editvalue-dialog-value-input").val();
+						$(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"'] .listitem-price").text( newvalue );
+						getList(listname).getItemData(item.id).price = newvalue;
+						
+						$( this ).dialog( "close" );
+					  }
+					}
+				  ]
+				});
 			}
 		);
 		$listitem.append($itemprice);
+		/*
+		var $itemprice = $("<div>").addClass("listitem listitem-price")
+		.append( $("<div>").addClass("textfield").text(item.price).button().click(
+			function(){
+				$(this).hide();
+				$(this).parent().find(".editfield").val( $(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"'] .listitem-price .textfield").text() ).show();
+			}
+		))
+		.append( $("<div>").addClass("editfield").val( $(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"'] .listitem-price .textfield").text() )
+												.append( $("<input>").addClass("inputfield").attr("size","10") )
+												.append( $("<div>").addClass("inputbutton").button().click(
+												function(){ 
+													$(this).parent().hide(); 
+													$(this).parent().parent().find(".textfield").text( $(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"'] .listitem-price .editfield .inputfield").val() ).show();
+												}) ).hide() );	
 		
-		var $itemlink = $("<div>").addClass("listitem listitem-link-div").append($("<a href='http://www.amazon.co.jp/dp/"+item.isbn+"' target='_blank' >Amazon.co.jp</a>").addClass("listitem-link"));
+		$listitem.append($itemprice);
+		*/
+		
+		var $itemlink = $("<div>").addClass("listitem listitem-link-div").append($("<a href='http://www.amazon"+item.fetchID+"/dp/"+item.isbn+"' target='_blank' >Amazon"+item.fetchID+"</a>").addClass("listitem-link"));
 		$listitem.append($itemlink);
 		
 		$listitem.append(addListViewItemEdit(listname, item));
@@ -367,7 +414,9 @@ GlobalWishlist.Main = (function(){
 	
 	var addListViewItemEdit = function(listname, item) {
 		var $editbar = $("<div>").addClass("listitem listitem-edit");
-		$editbar.append($("<div>").text("Delete").addClass("listitem listitem-edit-del").button().click( 
+		$editbar.append($("<div>").text("Delete").addClass("listitem listitem-edit listitem-edit-del").button({
+		  icons: { primary: "ui-icon-trash" }
+		}).click( 
 			function() { 
 				deleteListItem(listname,item); 
 			}
@@ -379,20 +428,58 @@ GlobalWishlist.Main = (function(){
 			}
 		));
 		*/
+		$editbar.append($("<div>").text("Edit Note").addClass("listitem listitem-edit listitem-edit-note").button({
+		  icons: { primary: "ui-icon-bookmark" }
+		}).click( 
+			function() { 
+				$(".editnote-dialog-note-input").val( getList(listname).getItemData(item.id).note );
+				$(".editnote-dialog").dialog({
+				  buttons: [
+					{
+					  text: "Update",
+					  icons: {
+						primary: "ui-icon-heart"
+					  },
+					  click: function() {
+						var note = $(".editnote-dialog-note-input").val();
+												
+						getList(listname).getItemData(item.id).note = note;
+						//$(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"'] .listitem-note").text(note);
+						updateListViewItem(listname,getList(listname).getItemData(item.id));
+						
+						$( this ).dialog( "close" );
+					  }
+					}
+				  ],
+				  modal: true
+				});
+			}
+		));
+		
+		$editbar.append($("<div>").text("Update").addClass("listitem listitem-edit listitem-edit-update").button({
+		  icons: { primary: "ui-icon-heart" }
+		}).click( 
+			function() { 
+				GlobalWishlist.IO.updateItemFromISBNAmazon(listname,item); 
+			}
+		));
+		
 		return $editbar;
 	};
 	
 	var deleteListViewItem = function (listname, item) {
 		$(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"']").remove();
-		getList(listname).print();
+		//getList(listname).print();
 	};
 	
 	var updateListViewItem = function (listname, item) {
 		var $listitem = $(".wishlist[listname='"+listname+"'] .wishlist-item[itemid='"+item.id+"']");
-		$listitem.find("listitem-name").text(item.name);
+		$listitem.find(".listitem-name").text(item.name);
+		$listitem.find(".listitem-note").text(item.note);
+		$listitem.find(".listitem-price").text(item.price);
 		/* todo : values that are changed during an update */
 		
-		getList(listname).print();
+		//getList(listname).print();
 	};
 	
 	var setActiveList = function(listname) {

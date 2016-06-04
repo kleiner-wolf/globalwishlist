@@ -22,15 +22,50 @@
 		<script>
 		$(function() {
 			$(".savebutton").button().click(function(){
-				GlobalWishlist.Main.saveList("db/testphp.json");
+				$(".savelist-dialog").dialog({
+				  modal: true,
+				  buttons: [
+					{
+					  text: "Save",
+					  icons: {
+						primary: "ui-icon-disk"
+					  },
+					  click: function() {
+						var filename = $(".savelist-dialog-name-input").val();
+						//GlobalWishlist.Main.saveList("db/testphp.json");
+						GlobalWishlist.Main.saveList(filename);
+						
+						$( this ).dialog( "close" );
+					  }
+					}
+				  ]
+				});				
 			});
 			
 			$(".loadbutton").button().click(function(){
-				GlobalWishlist.Main.loadList("db/testphp.json");
+				$(".loadlist-dialog").dialog({
+				  modal: true,
+				  buttons: [
+					{
+					  text: "Load",
+					  icons: {
+						primary: "ui-icon-disk"
+					  },
+					  click: function() {
+						var filename = $(".loadlist-dialog-name-input").val();
+						//GlobalWishlist.Main.loadList("db/testphp.json");
+						GlobalWishlist.Main.loadList(filename);
+						
+						$( this ).dialog( "close" );
+					  }
+					}
+				  ]
+				});				
 			});
 			
 			$(".additembutton").button().click(function(){	
 				$(".additem-dialog").dialog({
+				  modal: true,
 				  buttons: [
 					{
 					  text: "Add Item",
@@ -58,6 +93,7 @@
 			
 			$(".newlistbutton").button().click(function(){
 				$(".newlist-dialog").dialog({
+				  modal: true,
 				  buttons: [
 					{
 					  text: "Create",
@@ -82,6 +118,7 @@
 			
 			$(".additemlistbutton").button().click(function() {
 				$(".additemlist-dialog").dialog({
+					modal: true,
 					buttons: [
 					{
 					  text: "Add Items",
@@ -110,6 +147,9 @@
 				})
 			
 			});
+			
+			$(".savelist-dialog-name-input").val("db.json");
+			$(".loadlist-dialog-name-input").val("db.json");
 			
 		});
 		</script>
@@ -146,6 +186,26 @@
 				<div>Enter filename that contains the list of ISBN/ASIN numbers.</div>
 				<span>filename: </span>
 				<input class='additemlist-dialog-filename-input' />
+			</div>
+			
+			<div class="editnote-dialog" title="Edit Note" style="display: none">
+				<span>Note: </span>
+				<input class='editnote-dialog-note-input'>
+			</div>
+			
+			<div class="savelist-dialog" title="Save List" style="display: none">
+				<span>filename: </span>
+				<input class='savelist-dialog-name-input'>
+			</div>
+			
+			<div class="loadlist-dialog" title="Load List" style="display: none">
+				<span>filename: </span>
+				<input class='loadlist-dialog-name-input'>
+			</div>
+			
+			<div class="editvalue-dialog" title="Edit Value" style="display: none">
+				<span>Value: </span>
+				<input class='editvalue-dialog-value-input'>
 			</div>
 			
 			<div class="warning-dialog" title="Warning" style="display: none">
